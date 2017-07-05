@@ -38,6 +38,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -47,6 +49,7 @@ public class SimpleCardeaServer implements CardeaServer {
 	private final CardeaConfig config;
 	private final BackendManager backendManager;
 	private final ScheduledExecutorService executorService;
+	private final Logger logger;
 	private EventLoopGroup bossGroup;
 	private EventLoopGroup workerGroup;
 	
@@ -56,8 +59,8 @@ public class SimpleCardeaServer implements CardeaServer {
 		BackendBalancing backendBalancing = BackendBalancingFactory
 			.createBackendBalancing(config.getBalancingPolicy(), config.getBackends());
 		this.backendManager = new BackendManager(backendBalancing);
-		
 		this.executorService = Executors.newSingleThreadScheduledExecutor();
+		this.logger = LoggerFactory.getLogger(SimpleCardeaServer.class);
 	}
 	
 	@Override
@@ -68,12 +71,17 @@ public class SimpleCardeaServer implements CardeaServer {
 		Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
 		ChannelHandler channelHandler = new CardeaServerChannelInitializer(this.backendManager);
 		
+		this.logger.info("Starting backend handling tasks.");
+		
 		this.executorService
 			.scheduleAtFixedRate(new CheckDeadBackendsTask(this.backendManager), 10, 10,
 				TimeUnit.SECONDS);
 		this.executorService
 			.scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
 				TimeUnit.SECONDS);
+		
+		this.logger.info("Starting server and proxying all connections on *:",
+			this.config.getServerPort());
 		
 		ServerBootstrap serverBootstrap = new ServerBootstrap();
 		try {
@@ -87,6 +95,8 @@ public class SimpleCardeaServer implements CardeaServer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		this.logger.info("Started reverse proxy on *:", this.config.getServerPort());
 	}
 	
 	@Override
