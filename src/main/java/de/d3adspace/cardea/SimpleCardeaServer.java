@@ -26,6 +26,8 @@ import de.d3adspace.cardea.backend.BackendBalancingFactory;
 import de.d3adspace.cardea.backend.BackendManager;
 import de.d3adspace.cardea.config.CardeaConfig;
 import de.d3adspace.cardea.initializer.CardeaServerChannelInitializer;
+import de.d3adspace.cardea.task.BackendRecoverTask;
+import de.d3adspace.cardea.task.CheckDeadBackendsTask;
 import de.d3adspace.cardea.utils.NettyUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandler;
@@ -33,6 +35,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -41,6 +46,7 @@ public class SimpleCardeaServer implements CardeaServer {
 	
 	private final CardeaConfig config;
 	private final BackendManager backendManager;
+	private final ScheduledExecutorService executorService;
 	private EventLoopGroup bossGroup;
 	private EventLoopGroup workerGroup;
 	
@@ -50,6 +56,8 @@ public class SimpleCardeaServer implements CardeaServer {
 		BackendBalancing backendBalancing = BackendBalancingFactory
 			.createBackendBalancing(config.getBalancingPolicy(), config.getBackends());
 		this.backendManager = new BackendManager(backendBalancing);
+		
+		this.executorService = Executors.newSingleThreadScheduledExecutor();
 	}
 	
 	@Override
@@ -59,6 +67,13 @@ public class SimpleCardeaServer implements CardeaServer {
 		
 		Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
 		ChannelHandler channelHandler = new CardeaServerChannelInitializer(this.backendManager);
+		
+		this.executorService
+			.scheduleAtFixedRate(new CheckDeadBackendsTask(this.backendManager), 10, 10,
+				TimeUnit.SECONDS);
+		this.executorService
+			.scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
+				TimeUnit.SECONDS);
 		
 		ServerBootstrap serverBootstrap = new ServerBootstrap();
 		try {

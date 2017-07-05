@@ -47,8 +47,10 @@ public class CheckDeadBackendsTask implements Runnable {
 			if (!SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
 				this.backendManager.removeBackend(backend);
 				
-				this.logger.info("Lost Backend: {) [{}:{}]", backend.getName(), backend.getHost(),
+				this.logger.info("Lost Backend: {} [{}:{}]", backend.getName(), backend.getHost(),
 					backend.getPort());
+				
+				this.backendManager.addIdlingBackend(backend);
 			}
 		}
 	}

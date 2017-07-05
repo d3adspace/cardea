@@ -19,49 +19,38 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.task;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import de.d3adspace.cardea.backend.Backend;
+import de.d3adspace.cardea.backend.BackendManager;
+import de.d3adspace.cardea.utils.SocketUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
-public class BackendManager {
+public class BackendRecoverTask implements Runnable {
 	
-	private List<Backend> idlingBackends;
-	private BackendBalancing backendBalancing;
+	private final Logger logger;
+	private final BackendManager backendManager;
 	
-	public BackendManager(BackendBalancing backendBalancing) {
-		this.idlingBackends = new CopyOnWriteArrayList<>();
-		this.backendBalancing = backendBalancing;
+	public BackendRecoverTask(BackendManager backendManager) {
+		this.logger = LoggerFactory.getLogger(BackendRecoverTask.class);
+		this.backendManager = backendManager;
 	}
 	
-	public BackendBalancing getBackendBalancing() {
-		return backendBalancing;
-	}
-	
-	public void setBackendBalancing(BackendBalancing backendBalancing) {
-		this.backendBalancing = backendBalancing;
-	}
-	
-	public void addBackend(Backend backend) {
-		this.backendBalancing.registerBackend(backend);
-	}
-	
-	public void removeBackend(Backend backend) {
-		this.backendBalancing.removeBackend(backend);
-	}
-	
-	public void addIdlingBackend(Backend backend) {
-		this.idlingBackends.add(backend);
-	}
-	
-	public void removeIdlingBackend(Backend backend) {
-		this.idlingBackends.remove(backend);
-	}
-	
-	public List<Backend> getIdlingBackends() {
-		return idlingBackends;
+	@Override
+	public void run() {
+		for (Backend backend : backendManager.getIdlingBackends()) {
+			if (SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
+				this.backendManager.getIdlingBackends().remove(backend);
+				this.backendManager.getBackendBalancing().removeBackend(backend);
+				
+				this.logger
+					.info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+						backend.getPort());
+			}
+		}
 	}
 }
