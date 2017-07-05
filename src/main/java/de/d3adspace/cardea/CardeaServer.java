@@ -22,11 +22,19 @@
 package de.d3adspace.cardea;
 
 /**
+ * Basic interface for all cardea servers.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public interface CardeaServer {
 	
+	/**
+	 * Start the server.
+	 */
 	void start();
 	
+	/**
+	 * Stop the server.
+	 */
 	void stop();
 }

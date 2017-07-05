@@ -42,17 +42,47 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Basic server implementation.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SimpleCardeaServer implements CardeaServer {
 	
+	/**
+	 * The config for the server.
+	 */
 	private final CardeaConfig config;
+	
+	/**
+	 * The manager for all backends.
+	 */
 	private final BackendManager backendManager;
+	
+	/**
+	 * Executor for backend tasks.
+	 */
 	private final ScheduledExecutorService executorService;
+	
+	/**
+	 * The logger for the server actions.
+	 */
 	private final Logger logger;
+	
+	/**
+	 * Boss group for netty.
+	 */
 	private EventLoopGroup bossGroup;
+	
+	/**
+	 * Worker group for netty.
+	 */
 	private EventLoopGroup workerGroup;
 	
+	/**
+	 * Create a server by a config.
+	 *
+	 * @param config The config.
+	 */
 	SimpleCardeaServer(CardeaConfig config) {
 		this.config = config;
 		

@@ -24,10 +24,19 @@ package de.d3adspace.cardea;
 import de.d3adspace.cardea.config.CardeaConfig;
 
 /**
+ * Factory for all servers.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaServerFactory {
 	
+	/**
+	 * Create a new server instance.
+	 *
+	 * @param cardeaConfig The config.
+	 *
+	 * @return The server.
+	 */
 	public static CardeaServer createCardeaServer(CardeaConfig cardeaConfig) {
 		return new SimpleCardeaServer(cardeaConfig);
 	}
