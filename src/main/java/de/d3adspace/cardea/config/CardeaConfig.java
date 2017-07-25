@@ -23,33 +23,34 @@ package de.d3adspace.cardea.config;
 
 import de.d3adspace.cardea.backend.Backend;
 import de.d3adspace.cardea.backend.BackendBalancingType;
+
 import java.util.List;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaConfig {
-	
-	private final int serverPort;
-	private final List<Backend> backends;
-	private final BackendBalancingType balancingPolicy;
-	
-	public CardeaConfig(int serverPort, List<Backend> backends,
-		BackendBalancingType balancingPolicy) {
-		this.serverPort = serverPort;
-		this.backends = backends;
-		this.balancingPolicy = balancingPolicy;
-	}
-	
-	public List<Backend> getBackends() {
-		return backends;
-	}
-	
-	public int getServerPort() {
-		return serverPort;
-	}
-	
-	public BackendBalancingType getBalancingPolicy() {
-		return balancingPolicy;
-	}
+
+    private final int serverPort;
+    private final List<Backend> backends;
+    private final BackendBalancingType balancingPolicy;
+
+    public CardeaConfig(int serverPort, List<Backend> backends,
+                        BackendBalancingType balancingPolicy) {
+        this.serverPort = serverPort;
+        this.backends = backends;
+        this.balancingPolicy = balancingPolicy;
+    }
+
+    public List<Backend> getBackends() {
+        return backends;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public BackendBalancingType getBalancingPolicy() {
+        return balancingPolicy;
+    }
 }

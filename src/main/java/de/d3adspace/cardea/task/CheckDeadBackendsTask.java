@@ -24,34 +24,35 @@ package de.d3adspace.cardea.task;
 import de.d3adspace.cardea.backend.Backend;
 import de.d3adspace.cardea.backend.BackendManager;
 import de.d3adspace.cardea.utils.SocketUtils;
-import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CheckDeadBackendsTask implements Runnable {
-	
-	private final Logger logger;
-	private final BackendManager backendManager;
-	
-	public CheckDeadBackendsTask(BackendManager backendManager) {
-		this.logger = LoggerFactory.getLogger(CheckDeadBackendsTask.class);
-		this.backendManager = backendManager;
-	}
-	
-	@Override
-	public void run() {
-		for (Backend backend : new HashSet<>(backendManager.getBackendBalancing().getBackends())) {
-			if (!SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
-				this.backendManager.removeBackend(backend);
-				
-				this.logger.info("Lost Backend: {} [{}:{}]", backend.getName(), backend.getHost(),
-					backend.getPort());
-				
-				this.backendManager.addIdlingBackend(backend);
-			}
-		}
-	}
+
+    private final Logger logger;
+    private final BackendManager backendManager;
+
+    public CheckDeadBackendsTask(BackendManager backendManager) {
+        this.logger = LoggerFactory.getLogger(CheckDeadBackendsTask.class);
+        this.backendManager = backendManager;
+    }
+
+    @Override
+    public void run() {
+        for (Backend backend : new HashSet<>(backendManager.getBackendBalancing().getBackends())) {
+            if (!SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
+                this.backendManager.removeBackend(backend);
+
+                this.logger.info("Lost Backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+                        backend.getPort());
+
+                this.backendManager.addIdlingBackend(backend);
+            }
+        }
+    }
 }

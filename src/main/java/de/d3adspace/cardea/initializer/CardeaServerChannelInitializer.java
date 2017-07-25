@@ -33,28 +33,28 @@ import io.netty.channel.socket.SocketChannel;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaServerChannelInitializer extends ChannelInitializer<SocketChannel> {
-	
-	private final BackendManager backendManager;
-	
-	public CardeaServerChannelInitializer(BackendManager backendManager) {
-		this.backendManager = backendManager;
-	}
-	
-	@Override
-	protected void initChannel(SocketChannel socketChannel) throws Exception {
-		Backend backend = this.backendManager.getBackendBalancing().getBackend();
-		
-		if (backend == null) {
-			throw new OutOfBackendsException();
-		}
-		
+
+    private final BackendManager backendManager;
+
+    public CardeaServerChannelInitializer(BackendManager backendManager) {
+        this.backendManager = backendManager;
+    }
+
+    @Override
+    protected void initChannel(SocketChannel socketChannel) throws Exception {
+        Backend backend = this.backendManager.getBackendBalancing().getBackend();
+
+        if (backend == null) {
+            throw new OutOfBackendsException();
+        }
+
 		/*SelfSignedCertificate ssc = new SelfSignedCertificate();
 		SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
 			.build();*/
-		
-		ChannelPipeline pipeline = socketChannel.pipeline();
-		//pipeline.addLast(sslCtx.newHandler(socketChannel.alloc()));
-		//pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-		pipeline.addLast(new CardeaServerFrontEndHandler(backend.getHost(), backend.getPort()));
-	}
+
+        ChannelPipeline pipeline = socketChannel.pipeline();
+        //pipeline.addLast(sslCtx.newHandler(socketChannel.alloc()));
+        //pipeline.addLast(new LoggingHandler(LogLevel.INFO));
+        pipeline.addLast(new CardeaServerFrontEndHandler(backend.getHost(), backend.getPort()));
+    }
 }

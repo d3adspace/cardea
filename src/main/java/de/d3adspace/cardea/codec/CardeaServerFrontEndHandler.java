@@ -23,76 +23,71 @@ package de.d3adspace.cardea.codec;
 
 import de.d3adspace.cardea.utils.NettyUtils;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaServerFrontEndHandler extends ChannelInboundHandlerAdapter {
-	
-	private final String host;
-	private final int port;
-	private Channel outboundChannel;
-	
-	public CardeaServerFrontEndHandler(String host, int port) {
-		this.host = host;
-		this.port = port;
-	}
-	
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		final Channel inboundChannel = ctx.channel();
-		
-		// Start the connection attempt.
-		Bootstrap b = new Bootstrap();
-		b.group(inboundChannel.eventLoop())
-			.channel(ctx.channel().getClass())
-			.handler(new CardeaServerBackendHandler(inboundChannel))
-			.option(ChannelOption.AUTO_READ, false);
-		ChannelFuture f = b.connect(host, port);
-		
-		outboundChannel = f.channel();
-		
-		f.addListener((ChannelFutureListener) future -> {
-			if (future.isSuccess()) {
-				// connection complete start to read first data
-				inboundChannel.read();
-			} else {
-				// Close the connection if the connection attempt has failed.
-				inboundChannel.close();
-			}
-		});
-	}
-	
-	@Override
-	public void channelRead(final ChannelHandlerContext ctx, Object msg) {
-		if (outboundChannel.isActive()) {
-			outboundChannel.writeAndFlush(msg).addListener((ChannelFutureListener) future -> {
-				if (future.isSuccess()) {
-					// was able to flush out data, start to read the next chunk
-					ctx.channel().read();
-				} else {
-					future.channel().close();
-				}
-			});
-		}
-	}
-	
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) {
-		if (outboundChannel != null) {
-			NettyUtils.closeWhenFlushed(outboundChannel);
-		}
-	}
-	
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		cause.printStackTrace();
-		NettyUtils.closeWhenFlushed(ctx.channel());
-	}
+
+    private final String host;
+    private final int port;
+    private Channel outboundChannel;
+
+    public CardeaServerFrontEndHandler(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        final Channel inboundChannel = ctx.channel();
+
+        // Start the connection attempt.
+        Bootstrap b = new Bootstrap();
+        b.group(inboundChannel.eventLoop())
+                .channel(ctx.channel().getClass())
+                .handler(new CardeaServerBackendHandler(inboundChannel))
+                .option(ChannelOption.AUTO_READ, false);
+        ChannelFuture f = b.connect(host, port);
+
+        outboundChannel = f.channel();
+
+        f.addListener((ChannelFutureListener) future -> {
+            if (future.isSuccess()) {
+                // connection complete start to read first data
+                inboundChannel.read();
+            } else {
+                // Close the connection if the connection attempt has failed.
+                inboundChannel.close();
+            }
+        });
+    }
+
+    @Override
+    public void channelRead(final ChannelHandlerContext ctx, Object msg) {
+        if (outboundChannel.isActive()) {
+            outboundChannel.writeAndFlush(msg).addListener((ChannelFutureListener) future -> {
+                if (future.isSuccess()) {
+                    // was able to flush out data, start to read the next chunk
+                    ctx.channel().read();
+                } else {
+                    future.channel().close();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        if (outboundChannel != null) {
+            NettyUtils.closeWhenFlushed(outboundChannel);
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        NettyUtils.closeWhenFlushed(ctx.channel());
+    }
 }

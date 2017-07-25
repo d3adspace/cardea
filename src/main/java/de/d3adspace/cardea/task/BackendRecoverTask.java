@@ -31,26 +31,26 @@ import org.slf4j.LoggerFactory;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class BackendRecoverTask implements Runnable {
-	
-	private final Logger logger;
-	private final BackendManager backendManager;
-	
-	public BackendRecoverTask(BackendManager backendManager) {
-		this.logger = LoggerFactory.getLogger(BackendRecoverTask.class);
-		this.backendManager = backendManager;
-	}
-	
-	@Override
-	public void run() {
-		for (Backend backend : backendManager.getIdlingBackends()) {
-			if (SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
-				this.backendManager.getIdlingBackends().remove(backend);
-				this.backendManager.getBackendBalancing().removeBackend(backend);
-				
-				this.logger
-					.info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
-						backend.getPort());
-			}
-		}
-	}
+
+    private final Logger logger;
+    private final BackendManager backendManager;
+
+    public BackendRecoverTask(BackendManager backendManager) {
+        this.logger = LoggerFactory.getLogger(BackendRecoverTask.class);
+        this.backendManager = backendManager;
+    }
+
+    @Override
+    public void run() {
+        for (Backend backend : backendManager.getIdlingBackends()) {
+            if (SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
+                this.backendManager.getIdlingBackends().remove(backend);
+                this.backendManager.getBackendBalancing().removeBackend(backend);
+
+                this.logger
+                        .info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+                                backend.getPort());
+            }
+        }
+    }
 }

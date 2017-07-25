@@ -25,8 +25,8 @@ package de.d3adspace.cardea.exception;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class OutOfBackendsException extends Exception {
-	
-	public OutOfBackendsException() {
-		super("RAN OUT OF BACKENDS!");
-	}
+
+    public OutOfBackendsException() {
+        super("RAN OUT OF BACKENDS!");
+    }
 }

@@ -29,17 +29,17 @@ import java.net.Socket;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SocketUtils {
-	
-	public static boolean isReachable(String serverHost, int serverPort) {
-		boolean reached = false;
-		
-		try (Socket socket = new Socket()) {
-			socket.connect(new InetSocketAddress(serverHost, serverPort), 5000);
-			reached = true;
-		} catch (IOException ignore) {
-			// Lost backend
-		}
-		
-		return reached;
-	}
+
+    public static boolean isReachable(String serverHost, int serverPort) {
+        boolean reached = false;
+
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(serverHost, serverPort), 5000);
+            reached = true;
+        } catch (IOException ignore) {
+            // Lost backend
+        }
+
+        return reached;
+    }
 }

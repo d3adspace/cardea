@@ -35,11 +35,12 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic server implementation.
@@ -47,91 +48,91 @@ import org.slf4j.LoggerFactory;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SimpleCardeaServer implements CardeaServer {
-	
-	/**
-	 * The config for the server.
-	 */
-	private final CardeaConfig config;
-	
-	/**
-	 * The manager for all backends.
-	 */
-	private final BackendManager backendManager;
-	
-	/**
-	 * Executor for backend tasks.
-	 */
-	private final ScheduledExecutorService executorService;
-	
-	/**
-	 * The logger for the server actions.
-	 */
-	private final Logger logger;
-	
-	/**
-	 * Boss group for netty.
-	 */
-	private EventLoopGroup bossGroup;
-	
-	/**
-	 * Worker group for netty.
-	 */
-	private EventLoopGroup workerGroup;
-	
-	/**
-	 * Create a server by a config.
-	 *
-	 * @param config The config.
-	 */
-	SimpleCardeaServer(CardeaConfig config) {
-		this.config = config;
-		
-		BackendBalancing backendBalancing = BackendBalancingFactory
-			.createBackendBalancing(config.getBalancingPolicy(), config.getBackends());
-		this.backendManager = new BackendManager(backendBalancing);
-		this.executorService = Executors.newSingleThreadScheduledExecutor();
-		this.logger = LoggerFactory.getLogger(SimpleCardeaServer.class);
-	}
-	
-	@Override
-	public void start() {
-		this.bossGroup = NettyUtils.createEventLoopGroup(1);
-		this.workerGroup = new NioEventLoopGroup(4);
-		
-		Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
-		ChannelHandler channelHandler = new CardeaServerChannelInitializer(this.backendManager);
-		
-		this.logger.info("Starting backend handling tasks.");
-		
-		this.executorService
-			.scheduleAtFixedRate(new CheckDeadBackendsTask(this.backendManager), 10, 10,
-				TimeUnit.SECONDS);
-		this.executorService
-			.scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
-				TimeUnit.SECONDS);
-		
-		this.logger.info("Starting server and proxying all connections on *:",
-			this.config.getServerPort());
-		
-		ServerBootstrap serverBootstrap = new ServerBootstrap();
-		try {
-			serverBootstrap
-				.channel(serverChannelClazz)
-				.group(this.bossGroup, this.workerGroup)
-				.childHandler(channelHandler)
-				.childOption(ChannelOption.AUTO_READ, false)
-				.bind(this.config.getServerPort())
-				.sync().channel().closeFuture().sync();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		this.logger.info("Started reverse proxy on *:", this.config.getServerPort());
-	}
-	
-	@Override
-	public void stop() {
-		this.bossGroup.shutdownGracefully();
-		this.workerGroup.shutdownGracefully();
-	}
+
+    /**
+     * The config for the server.
+     */
+    private final CardeaConfig config;
+
+    /**
+     * The manager for all backends.
+     */
+    private final BackendManager backendManager;
+
+    /**
+     * Executor for backend tasks.
+     */
+    private final ScheduledExecutorService executorService;
+
+    /**
+     * The logger for the server actions.
+     */
+    private final Logger logger;
+
+    /**
+     * Boss group for netty.
+     */
+    private EventLoopGroup bossGroup;
+
+    /**
+     * Worker group for netty.
+     */
+    private EventLoopGroup workerGroup;
+
+    /**
+     * Create a server by a config.
+     *
+     * @param config The config.
+     */
+    SimpleCardeaServer(CardeaConfig config) {
+        this.config = config;
+
+        BackendBalancing backendBalancing = BackendBalancingFactory
+                .createBackendBalancing(config.getBalancingPolicy(), config.getBackends());
+        this.backendManager = new BackendManager(backendBalancing);
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
+        this.logger = LoggerFactory.getLogger(SimpleCardeaServer.class);
+    }
+
+    @Override
+    public void start() {
+        this.bossGroup = NettyUtils.createEventLoopGroup(1);
+        this.workerGroup = new NioEventLoopGroup(4);
+
+        Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
+        ChannelHandler channelHandler = new CardeaServerChannelInitializer(this.backendManager);
+
+        this.logger.info("Starting backend handling tasks.");
+
+        this.executorService
+                .scheduleAtFixedRate(new CheckDeadBackendsTask(this.backendManager), 10, 10,
+                        TimeUnit.SECONDS);
+        this.executorService
+                .scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
+                        TimeUnit.SECONDS);
+
+        this.logger.info("Starting server and proxying all connections on *:",
+                this.config.getServerPort());
+
+        ServerBootstrap serverBootstrap = new ServerBootstrap();
+        try {
+            serverBootstrap
+                    .channel(serverChannelClazz)
+                    .group(this.bossGroup, this.workerGroup)
+                    .childHandler(channelHandler)
+                    .childOption(ChannelOption.AUTO_READ, false)
+                    .bind(this.config.getServerPort())
+                    .sync().channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        this.logger.info("Started reverse proxy on *:", this.config.getServerPort());
+    }
+
+    @Override
+    public void stop() {
+        this.bossGroup.shutdownGracefully();
+        this.workerGroup.shutdownGracefully();
+    }
 }

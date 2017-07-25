@@ -27,14 +27,14 @@ package de.d3adspace.cardea;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public interface CardeaServer {
-	
-	/**
-	 * Start the server.
-	 */
-	void start();
-	
-	/**
-	 * Stop the server.
-	 */
-	void stop();
+
+    /**
+     * Start the server.
+     */
+    void start();
+
+    /**
+     * Stop the server.
+     */
+    void stop();
 }

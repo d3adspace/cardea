@@ -28,40 +28,40 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class BackendManager {
-	
-	private List<Backend> idlingBackends;
-	private BackendBalancing backendBalancing;
-	
-	public BackendManager(BackendBalancing backendBalancing) {
-		this.idlingBackends = new CopyOnWriteArrayList<>();
-		this.backendBalancing = backendBalancing;
-	}
-	
-	public BackendBalancing getBackendBalancing() {
-		return backendBalancing;
-	}
-	
-	public void setBackendBalancing(BackendBalancing backendBalancing) {
-		this.backendBalancing = backendBalancing;
-	}
-	
-	public void addBackend(Backend backend) {
-		this.backendBalancing.registerBackend(backend);
-	}
-	
-	public void removeBackend(Backend backend) {
-		this.backendBalancing.removeBackend(backend);
-	}
-	
-	public void addIdlingBackend(Backend backend) {
-		this.idlingBackends.add(backend);
-	}
-	
-	public void removeIdlingBackend(Backend backend) {
-		this.idlingBackends.remove(backend);
-	}
-	
-	public List<Backend> getIdlingBackends() {
-		return idlingBackends;
-	}
+
+    private List<Backend> idlingBackends;
+    private BackendBalancing backendBalancing;
+
+    public BackendManager(BackendBalancing backendBalancing) {
+        this.idlingBackends = new CopyOnWriteArrayList<>();
+        this.backendBalancing = backendBalancing;
+    }
+
+    public BackendBalancing getBackendBalancing() {
+        return backendBalancing;
+    }
+
+    public void setBackendBalancing(BackendBalancing backendBalancing) {
+        this.backendBalancing = backendBalancing;
+    }
+
+    public void addBackend(Backend backend) {
+        this.backendBalancing.registerBackend(backend);
+    }
+
+    public void removeBackend(Backend backend) {
+        this.backendBalancing.removeBackend(backend);
+    }
+
+    public void addIdlingBackend(Backend backend) {
+        this.idlingBackends.add(backend);
+    }
+
+    public void removeIdlingBackend(Backend backend) {
+        this.idlingBackends.remove(backend);
+    }
+
+    public List<Backend> getIdlingBackends() {
+        return idlingBackends;
+    }
 }

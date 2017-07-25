@@ -27,21 +27,21 @@ import java.util.List;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class BackendBalancingFactory {
-	
-	public static BackendBalancing createBackendBalancing(BackendBalancingType type,
-		List<Backend> backends) {
-		BackendBalancing backendBalancing;
-		
-		switch (type) {
-			case RANDOM: {
-				backendBalancing = new BackendBalancingRandom(backends);
-				break;
-			}
-			default: {
-				backendBalancing = new BackendBalancingRoundRobin(backends);
-			}
-		}
-		
-		return backendBalancing;
-	}
+
+    public static BackendBalancing createBackendBalancing(BackendBalancingType type,
+                                                          List<Backend> backends) {
+        BackendBalancing backendBalancing;
+
+        switch (type) {
+            case RANDOM: {
+                backendBalancing = new BackendBalancingRandom(backends);
+                break;
+            }
+            default: {
+                backendBalancing = new BackendBalancingRoundRobin(backends);
+            }
+        }
+
+        return backendBalancing;
+    }
 }

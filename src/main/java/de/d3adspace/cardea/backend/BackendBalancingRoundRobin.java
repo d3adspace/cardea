@@ -28,26 +28,26 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class BackendBalancingRoundRobin extends BackendBalancing {
-	
-	private final AtomicInteger atomicInteger = new AtomicInteger(0);
-	
-	public BackendBalancingRoundRobin(List<Backend> backends) {
-		super(backends);
-	}
-	
-	@Override
-	public Backend getBackend() {
-		int currentBackendId = atomicInteger.getAndIncrement();
-		
-		if (currentBackendId >= getBackendCount()) {
-			currentBackendId = 0;
-			atomicInteger.set(0);
-		}
-		
-		if (getBackendCount() == 0) {
-			return null;
-		}
-		
-		return getBackends().get(currentBackendId);
-	}
+
+    private final AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    public BackendBalancingRoundRobin(List<Backend> backends) {
+        super(backends);
+    }
+
+    @Override
+    public Backend getBackend() {
+        int currentBackendId = atomicInteger.getAndIncrement();
+
+        if (currentBackendId >= getBackendCount()) {
+            currentBackendId = 0;
+            atomicInteger.set(0);
+        }
+
+        if (getBackendCount() == 0) {
+            return null;
+        }
+
+        return getBackends().get(currentBackendId);
+    }
 }

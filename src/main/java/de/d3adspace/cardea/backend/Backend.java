@@ -25,26 +25,26 @@ package de.d3adspace.cardea.backend;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class Backend {
-	
-	private final String name;
-	private final String host;
-	private final int port;
-	
-	public Backend(String name, String host, int port) {
-		this.name = name;
-		this.host = host;
-		this.port = port;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public int getPort() {
-		return port;
-	}
-	
-	public String getHost() {
-		return host;
-	}
+
+    private final String name;
+    private final String host;
+    private final int port;
+
+    public Backend(String name, String host, int port) {
+        this.name = name;
+        this.host = host;
+        this.port = port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getHost() {
+        return host;
+    }
 }

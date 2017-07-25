@@ -25,7 +25,7 @@ package de.d3adspace.cardea.backend;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public enum BackendBalancingType {
-	
-	ROUND_ROBIN,
-	RANDOM
+
+    ROUND_ROBIN,
+    RANDOM
 }

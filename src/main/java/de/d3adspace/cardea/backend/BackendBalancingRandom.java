@@ -28,20 +28,20 @@ import java.util.Random;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class BackendBalancingRandom extends BackendBalancing {
-	
-	private static final Random RANDOM = new Random();
-	
-	public BackendBalancingRandom(List<Backend> backends) {
-		super(backends);
-	}
-	
-	@Override
-	public Backend getBackend() {
-		if (getBackendCount() == 0) {
-			return null;
-		}
-		
-		int random = RANDOM.nextInt(getBackendCount());
-		return getBackends().get(random);
-	}
+
+    private static final Random RANDOM = new Random();
+
+    public BackendBalancingRandom(List<Backend> backends) {
+        super(backends);
+    }
+
+    @Override
+    public Backend getBackend() {
+        if (getBackendCount() == 0) {
+            return null;
+        }
+
+        int random = RANDOM.nextInt(getBackendCount());
+        return getBackends().get(random);
+    }
 }

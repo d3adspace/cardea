@@ -27,28 +27,28 @@ import java.util.List;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public abstract class BackendBalancing {
-	
-	private final List<Backend> backends;
-	
-	public BackendBalancing(List<Backend> backends) {
-		this.backends = backends;
-	}
-	
-	public abstract Backend getBackend();
-	
-	public void registerBackend(Backend backend) {
-		backends.add(backend);
-	}
-	
-	public void removeBackend(Backend backend) {
-		backends.remove(backend);
-	}
-	
-	public List<Backend> getBackends() {
-		return backends;
-	}
-	
-	protected int getBackendCount() {
-		return this.backends.size();
-	}
+
+    private final List<Backend> backends;
+
+    public BackendBalancing(List<Backend> backends) {
+        this.backends = backends;
+    }
+
+    public abstract Backend getBackend();
+
+    public void registerBackend(Backend backend) {
+        backends.add(backend);
+    }
+
+    public void removeBackend(Backend backend) {
+        backends.remove(backend);
+    }
+
+    public List<Backend> getBackends() {
+        return backends;
+    }
+
+    protected int getBackendCount() {
+        return this.backends.size();
+    }
 }

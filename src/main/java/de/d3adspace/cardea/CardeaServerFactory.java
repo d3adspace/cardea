@@ -29,15 +29,14 @@ import de.d3adspace.cardea.config.CardeaConfig;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaServerFactory {
-	
-	/**
-	 * Create a new server instance.
-	 *
-	 * @param cardeaConfig The config.
-	 *
-	 * @return The server.
-	 */
-	public static CardeaServer createCardeaServer(CardeaConfig cardeaConfig) {
-		return new SimpleCardeaServer(cardeaConfig);
-	}
+
+    /**
+     * Create a new server instance.
+     *
+     * @param cardeaConfig The config.
+     * @return The server.
+     */
+    public static CardeaServer createCardeaServer(CardeaConfig cardeaConfig) {
+        return new SimpleCardeaServer(cardeaConfig);
+    }
 }

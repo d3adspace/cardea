@@ -31,37 +31,37 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CardeaServerBackendHandler extends ChannelInboundHandlerAdapter {
-	
-	private final Channel inboundChannel;
-	
-	public CardeaServerBackendHandler(Channel inboundChannel) {
-		this.inboundChannel = inboundChannel;
-	}
-	
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
-		ctx.read();
-	}
-	
-	@Override
-	public void channelRead(final ChannelHandlerContext ctx, Object msg) {
-		inboundChannel.writeAndFlush(msg).addListener((ChannelFutureListener) future -> {
-			if (future.isSuccess()) {
-				ctx.channel().read();
-			} else {
-				future.channel().close();
-			}
-		});
-	}
-	
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) {
-		NettyUtils.closeWhenFlushed(inboundChannel);
-	}
-	
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		cause.printStackTrace();
-		NettyUtils.closeWhenFlushed(ctx.channel());
-	}
+
+    private final Channel inboundChannel;
+
+    public CardeaServerBackendHandler(Channel inboundChannel) {
+        this.inboundChannel = inboundChannel;
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        ctx.read();
+    }
+
+    @Override
+    public void channelRead(final ChannelHandlerContext ctx, Object msg) {
+        inboundChannel.writeAndFlush(msg).addListener((ChannelFutureListener) future -> {
+            if (future.isSuccess()) {
+                ctx.channel().read();
+            } else {
+                future.channel().close();
+            }
+        });
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        NettyUtils.closeWhenFlushed(inboundChannel);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        NettyUtils.closeWhenFlushed(ctx.channel());
+    }
 }
