@@ -9,7 +9,8 @@ policies:
 dev:
 
 [![Build Status](https://travis-ci.org/D3adspaceEnterprises/cardea.svg?branch=dev)](https://travis-ci.org/D3adspaceEnterprises/cardea)
-
+[![codecov](https://codecov.io/gh/D3adspaceEnterprises/cardea/branch/dev/graph/badge.svg)](https://codecov.io/gh/D3adspaceEnterprises/cardea)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/D3adspaceEnterprises/cardea/edit/dev/README.md)
 # Installation / Usage
 
 You can use Cardea as a standalone application or embedded in your application. Start 
