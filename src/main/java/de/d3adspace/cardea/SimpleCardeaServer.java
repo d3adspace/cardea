@@ -111,7 +111,7 @@ public class SimpleCardeaServer implements CardeaServer {
                 .scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
                         TimeUnit.SECONDS);
 
-        this.logger.info("Starting server and proxying all connections on *:",
+        this.logger.info("Starting server and proxying all connections on *:{}",
                 this.config.getServerPort());
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();

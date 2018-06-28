@@ -29,24 +29,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class BackendManager {
 
-    private List<Backend> idlingBackends;
-    private BackendBalancing backendBalancing;
+    private final List<Backend> idlingBackends = new CopyOnWriteArrayList<>();
+    private final BackendBalancing backendBalancing;
 
     public BackendManager(BackendBalancing backendBalancing) {
-        this.idlingBackends = new CopyOnWriteArrayList<>();
         this.backendBalancing = backendBalancing;
     }
 
     public BackendBalancing getBackendBalancing() {
         return backendBalancing;
-    }
-
-    public void setBackendBalancing(BackendBalancing backendBalancing) {
-        this.backendBalancing = backendBalancing;
-    }
-
-    public void addBackend(Backend backend) {
-        this.backendBalancing.registerBackend(backend);
     }
 
     public void removeBackend(Backend backend) {
@@ -55,10 +46,6 @@ public class BackendManager {
 
     public void addIdlingBackend(Backend backend) {
         this.idlingBackends.add(backend);
-    }
-
-    public void removeIdlingBackend(Backend backend) {
-        this.idlingBackends.remove(backend);
     }
 
     public List<Backend> getIdlingBackends() {

@@ -13,7 +13,7 @@ dev:
 # Installation / Usage
 
 You can use Cardea as a standalone application or embedded in your application. Start 
-cardea as a standalone application using command line [COMING SOON]: 
+cardea as a standalone application using command line
 ```bash
 java -jar cardea-server-1.0-SNAPSHOT.jar -p 8081 -bp ROUND_ROBIN -b host:port,host:port,host:port... 
 ```
