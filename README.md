@@ -5,6 +5,11 @@ policies:
 - Round Robin [ROUND_ROBIN]
 - Random Selection [RANDOM]
 
+# Build Status & Code Coverage
+dev:
+
+[![Build Status](https://travis-ci.org/D3adspaceEnterprises/cardea.svg?branch=dev)](https://travis-ci.org/D3adspaceEnterprises/cardea)
+
 # Installation / Usage
 
 You can use Cardea as a standalone application or embedded in your application. Start 
