@@ -48,13 +48,7 @@ public class CardeaServerChannelInitializer extends ChannelInitializer<SocketCha
             throw new OutOfBackendsException();
         }
 
-		/*SelfSignedCertificate ssc = new SelfSignedCertificate();
-		SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
-			.build();*/
-
         ChannelPipeline pipeline = socketChannel.pipeline();
-        //pipeline.addLast(sslCtx.newHandler(socketChannel.alloc()));
-        //pipeline.addLast(new LoggingHandler(LogLevel.INFO));
         pipeline.addLast(new CardeaServerFrontEndHandler(backend.getHost(), backend.getPort()));
     }
 }
