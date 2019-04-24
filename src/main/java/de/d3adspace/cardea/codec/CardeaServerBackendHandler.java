@@ -28,7 +28,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class CardeaServerBackendHandler extends ChannelInboundHandlerAdapter {
 

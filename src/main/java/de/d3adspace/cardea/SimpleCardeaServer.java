@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Basic server implementation.
  *
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class SimpleCardeaServer implements CardeaServer {
 

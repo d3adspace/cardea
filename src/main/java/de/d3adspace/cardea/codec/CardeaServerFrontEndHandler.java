@@ -26,7 +26,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class CardeaServerFrontEndHandler extends ChannelInboundHandlerAdapter {
 

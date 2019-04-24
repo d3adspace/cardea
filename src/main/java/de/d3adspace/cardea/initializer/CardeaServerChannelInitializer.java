@@ -30,7 +30,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class CardeaServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 

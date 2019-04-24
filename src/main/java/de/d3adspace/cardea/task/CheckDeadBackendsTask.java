@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class CheckDeadBackendsTask implements Runnable {
 

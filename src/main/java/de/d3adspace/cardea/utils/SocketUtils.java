@@ -26,7 +26,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class SocketUtils {
 

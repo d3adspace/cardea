@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class BackendBalancingRandom extends BackendBalancing {
 

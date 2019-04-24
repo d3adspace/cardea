@@ -25,13 +25,25 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class BackendManager {
 
+    /**
+     * All currently idling backends.
+     */
     private final List<Backend> idlingBackends = new CopyOnWriteArrayList<>();
+
+    /**
+     * The backend balancing management.
+     */
     private final BackendBalancing backendBalancing;
 
+    /**
+     * Create a new backend manager.
+     *
+     * @param backendBalancing The backend balancing management.
+     */
     public BackendManager(BackendBalancing backendBalancing) {
         this.backendBalancing = backendBalancing;
     }
@@ -56,18 +68,41 @@ public class BackendManager {
         return backendBalancing.getBackends();
     }
 
+    /**
+     * Unregister the given backend.
+     *
+     * @param backend The backend.
+     */
     public void removeBackend(Backend backend) {
+
         backendBalancing.removeBackend(backend);
     }
 
+    /**
+     * Mark the given backend as idling.
+     *
+     * @param backend The backend.
+     */
     public void addIdlingBackend(Backend backend) {
+
         idlingBackends.add(backend);
     }
 
+    /**
+     * Get all idling backends.
+     *
+     * @return The backend.
+     */
     public List<Backend> getIdlingBackends() {
+
         return idlingBackends;
     }
 
+    /**
+     * Register a backend.
+     *
+     * @param backend The backend.
+     */
     public void addBackend(Backend backend) {
 
         backendBalancing.registerBackend(backend);

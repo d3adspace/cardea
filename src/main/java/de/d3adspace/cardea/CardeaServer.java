@@ -24,7 +24,7 @@ package de.d3adspace.cardea;
 /**
  * Basic interface for all cardea servers.
  *
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public interface CardeaServer {
 

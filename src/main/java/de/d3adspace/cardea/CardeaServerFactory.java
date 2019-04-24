@@ -26,7 +26,7 @@ import de.d3adspace.cardea.config.CardeaConfig;
 /**
  * Factory for all servers.
  *
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class CardeaServerFactory {
 

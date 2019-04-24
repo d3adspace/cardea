@@ -22,7 +22,7 @@
 package de.d3adspace.cardea.backend;
 
 /**
- * @author Felix 'SasukeKawaii' Klauke
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class Backend {
 
