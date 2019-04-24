@@ -44,7 +44,7 @@ public class CheckDeadBackendsTask implements Runnable {
 
     @Override
     public void run() {
-        for (Backend backend : new HashSet<>(backendManager.getBackendBalancing().getBackends())) {
+        for (Backend backend : new HashSet<>(backendManager.getBackends())) {
             if (!SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
                 this.backendManager.removeBackend(backend);
 

@@ -36,8 +36,24 @@ public class BackendManager {
         this.backendBalancing = backendBalancing;
     }
 
-    public BackendBalancing getBackendBalancing() {
-        return backendBalancing;
+    /**
+     * Get the next eligible backend.
+     *
+     * @return The backend.
+     */
+    public Backend nextBackend() {
+
+        return backendBalancing.getBackend();
+    }
+
+    /**
+     * Get all backends.
+     *
+     * @return The backends.
+     */
+    public List<Backend> getBackends() {
+
+        return backendBalancing.getBackends();
     }
 
     public void removeBackend(Backend backend) {
@@ -50,5 +66,10 @@ public class BackendManager {
 
     public List<Backend> getIdlingBackends() {
         return idlingBackends;
+    }
+
+    public void addBackend(Backend backend) {
+
+        backendBalancing.registerBackend(backend);
     }
 }

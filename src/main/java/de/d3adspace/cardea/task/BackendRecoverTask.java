@@ -45,7 +45,7 @@ public class BackendRecoverTask implements Runnable {
         for (Backend backend : backendManager.getIdlingBackends()) {
             if (SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
                 this.backendManager.getIdlingBackends().remove(backend);
-                this.backendManager.getBackendBalancing().removeBackend(backend);
+                this.backendManager.addBackend(backend);
 
                 this.logger
                         .info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
