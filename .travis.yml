@@ -1,11 +1,39 @@
+################
+### Language ###
+################
 language: java
-script: "mvn clean compile test jacoco:report"
 
+###########
+### JDK ###
+###########
 jdk:
-- oraclejdk8
+  - oraclejdk8
 
-after_success:
-- bash <(curl -s https://codecov.io/bash)
-
+#####################
+### Notifications ###
+#####################
 notifications:
   email: false
+
+####################
+### Build script ###
+####################
+script:
+  - mvn clean test compile package install jacoco:report
+
+##################
+### Deployment ###
+##################
+deploy:
+  provider: script
+  script: mvn deploy --settings deploy/maven-settings.xml
+  on:
+    branch: master
+
+###################
+### Environment ###
+###################
+env:
+  global:
+  - secure: G31rcvkZV41aJn5U3fZX8SFrivo7pZVQ0pAEXo0AGRgK/Z2LOqecj34C+MinQc2rxEcgj+550Fxx4wJvqRXzGR0bLlc+PrkmH0MvCFXaooqaHjQCLaCM3DGX0SaK0VpkrZPja5lEEpR+zZkjiFsu8K5EH5f4VqdX9wvhiAQhZXTxyQ78gwp71TfxB3h/yc8trPQrz9maaozHRLkrN7pGRdLY7E2BJ/WMLmUB2m0O3z7lw5rSHf/Z/9W/7/zkq496y0TF+wuukLpJgVnMkMeA4gJUhxpI4RiMQEShiIpWKAZDtUlpqo9f/3CfXbAjqsErbR9iUEuiimxT3+5rC1V1hoTTLbaDFVREhBz6NAZcaIZW/5KdjNM3EdGKlROLf0PtkPJlj9vTO858t54mYPB7jvsSRHITEEnno8Ra7d2K3zncRJJQm2qwbFuM+7ILIhsmzR/w9CBoV4wgWUCFOwo0i+3dP9Dq4AV1BG4O8WV1u+ujJ7Rwt2+5ZvDVhjOX58YybFjb9hWRn4otOHCUN45mJyxca1rqNY6JiC+IEPTM2Q0i9ynixts1yptYBHabQUY3GH0/qKOb+6THKpOXjUX8ORRPaoKhS3Vz4vpdFcDaAoDchbSy5mcYyzOToNAdO4SWXt6IAQ3EjhWfYsRLW2FeNP3Ib6GNbnk8gon1oqBV1Hw=
+  - secure: QVBERxsFlay0OnztyPxoUU9ObAIG7novrLah/MKy9pQ7D0aH8yODpkaCcAFjhLFJc9Eh7SUmMEzONosaWA8Plaod7bn3iUzdfcN4FXH8+FmL4ZYSww8IvgGh1G1Mbi2pSjw+RUDYqQeh2YKw3VxJvCtfIZSAIGoeRclznSIhXaqseXdJAtYmxJ0nAplOKIBKbyZP/tgS8EbizXiUXgowPaVoh28EHMQ4HbaOeN7RlR+2Cqjfdodz+kkHN9xuxJR1WCilhQFC0TC3stfk/Cqd/HspA+RJlEB02Tu187HT5H057v/yS+XvdMRazom4kGavXDsfyvzd4yR7HfEO34aQ34rxeUCtZ72WPTgeYj85H58HeKazDZiNOdiz8UmNI7NY4T5I7yjgDtCsLZxCGCprr0KlIXkApVLZHR3fgYksKpr2A5QOZw4hkJshMXx4ZnWBP6h1xdo71Ywp2RSOl9ik5Rwo4ARByDY0yBFzjXHtDNz8lPl7rQRuEOEV9f+/xRfA2irjyBGM1+7CE5/GLrbBUXxm+ah2eoSWLLA4MoiNrQz90YXXKDjkPbx5LvDQu6Yu+QbmltwBgyGtFvYiZaUVfLgeSl9vfXr5WWCvaljZywBdLWJ0IDi2src6qn7IxlqDHjVUICm96GCIGTKvgbIvTMegEAwKd9BcgldOwsV/rQY=
