@@ -29,6 +29,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
+        <finalName>cardea-server</finalName>
+
         <plugins>
             <!-- Compiler Settings -->
             <plugin>
