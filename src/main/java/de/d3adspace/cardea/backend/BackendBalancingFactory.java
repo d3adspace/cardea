@@ -32,14 +32,10 @@ public class BackendBalancingFactory {
                                                           List<Backend> backends) {
         BackendBalancing backendBalancing;
 
-        switch (type) {
-            case RANDOM: {
-                backendBalancing = new BackendBalancingRandom(backends);
-                break;
-            }
-            default: {
-                backendBalancing = new BackendBalancingRoundRobin(backends);
-            }
+        if (type == BackendBalancingType.RANDOM) {
+            backendBalancing = new BackendBalancingRandom(backends);
+        } else {
+            backendBalancing = new BackendBalancingRoundRobin(backends);
         }
 
         return backendBalancing;

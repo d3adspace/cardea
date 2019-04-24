@@ -57,11 +57,11 @@ public class BackendManager {
     }
 
     public void removeBackend(Backend backend) {
-        this.backendBalancing.removeBackend(backend);
+        backendBalancing.removeBackend(backend);
     }
 
     public void addIdlingBackend(Backend backend) {
-        this.idlingBackends.add(backend);
+        idlingBackends.add(backend);
     }
 
     public List<Backend> getIdlingBackends() {

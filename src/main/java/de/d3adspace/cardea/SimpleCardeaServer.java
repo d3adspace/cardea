@@ -96,43 +96,43 @@ public class SimpleCardeaServer implements CardeaServer {
 
     @Override
     public void start() {
-        this.bossGroup = NettyUtils.createEventLoopGroup(1);
-        this.workerGroup = new NioEventLoopGroup(4);
+        bossGroup = NettyUtils.createEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup(4);
 
         Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
-        ChannelHandler channelHandler = new CardeaServerChannelInitializer(this.backendManager);
+        ChannelHandler channelHandler = new CardeaServerChannelInitializer(backendManager);
 
-        this.logger.info("Starting backend handling tasks.");
+        logger.info("Starting backend handling tasks.");
 
-        this.executorService
+        executorService
                 .scheduleAtFixedRate(new CheckDeadBackendsTask(this.backendManager), 10, 10,
                         TimeUnit.SECONDS);
-        this.executorService
+        executorService
                 .scheduleAtFixedRate(new BackendRecoverTask(this.backendManager), 10, 10,
                         TimeUnit.SECONDS);
 
-        this.logger.info("Starting server and proxying all connections on *:{}",
-                this.config.getServerPort());
+        logger.info("Starting server and proxying all connections on *:{}",
+                config.getServerPort());
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         try {
             serverBootstrap
                     .channel(serverChannelClazz)
-                    .group(this.bossGroup, this.workerGroup)
+                    .group(bossGroup, workerGroup)
                     .childHandler(channelHandler)
                     .childOption(ChannelOption.AUTO_READ, false)
-                    .bind(this.config.getServerPort())
+                    .bind(config.getServerPort())
                     .sync().channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        this.logger.info("Started reverse proxy on *:{}", this.config.getServerPort());
+        logger.info("Started reverse proxy on *:{}", config.getServerPort());
     }
 
     @Override
     public void stop() {
-        this.bossGroup.shutdownGracefully();
-        this.workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 }

@@ -31,7 +31,7 @@ public class BackendBalancingRoundRobin extends BackendBalancing {
 
     private final AtomicInteger atomicInteger = new AtomicInteger(0);
 
-    public BackendBalancingRoundRobin(List<Backend> backends) {
+    BackendBalancingRoundRobin(List<Backend> backends) {
         super(backends);
     }
 

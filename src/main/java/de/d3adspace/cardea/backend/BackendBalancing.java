@@ -30,17 +30,17 @@ public abstract class BackendBalancing {
 
     private final List<Backend> backends;
 
-    public BackendBalancing(List<Backend> backends) {
+    BackendBalancing(List<Backend> backends) {
         this.backends = backends;
     }
 
     public abstract Backend getBackend();
 
-    public void registerBackend(Backend backend) {
+    void registerBackend(Backend backend) {
         backends.add(backend);
     }
 
-    public void removeBackend(Backend backend) {
+    void removeBackend(Backend backend) {
         backends.remove(backend);
     }
 
@@ -48,7 +48,7 @@ public abstract class BackendBalancing {
         return backends;
     }
 
-    protected int getBackendCount() {
-        return this.backends.size();
+    int getBackendCount() {
+        return backends.size();
     }
 }

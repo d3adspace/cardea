@@ -21,7 +21,6 @@
 
 package de.d3adspace.cardea.task;
 
-import de.d3adspace.cardea.backend.Backend;
 import de.d3adspace.cardea.backend.BackendManager;
 import de.d3adspace.cardea.utils.SocketUtils;
 import org.slf4j.Logger;
@@ -44,15 +43,14 @@ public class CheckDeadBackendsTask implements Runnable {
 
     @Override
     public void run() {
-        for (Backend backend : new HashSet<>(backendManager.getBackends())) {
-            if (!SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
-                this.backendManager.removeBackend(backend);
-
-                this.logger.info("Lost Backend: {} [{}:{}]", backend.getName(), backend.getHost(),
-                        backend.getPort());
-
-                this.backendManager.addIdlingBackend(backend);
-            }
-        }
+        new HashSet<>(backendManager.getBackends())
+                .stream()
+                .filter(backend -> !SocketUtils.isReachable(backend.getHost(), backend.getPort()))
+                .forEach(backend -> {
+                    backendManager.removeBackend(backend);
+                    logger.info("Lost Backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+                            backend.getPort());
+                    backendManager.addIdlingBackend(backend);
+                });
     }
 }

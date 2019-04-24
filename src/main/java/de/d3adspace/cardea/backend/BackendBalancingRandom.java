@@ -31,7 +31,7 @@ public class BackendBalancingRandom extends BackendBalancing {
 
     private static final Random RANDOM = new Random();
 
-    public BackendBalancingRandom(List<Backend> backends) {
+    BackendBalancingRandom(List<Backend> backends) {
         super(backends);
     }
 

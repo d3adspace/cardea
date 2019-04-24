@@ -42,7 +42,7 @@ public class CardeaServerChannelInitializer extends ChannelInitializer<SocketCha
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        Backend backend = this.backendManager.nextBackend();
+        Backend backend = backendManager.nextBackend();
 
         if (backend == null) {
             throw new OutOfBackendsException();

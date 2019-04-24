@@ -21,7 +21,6 @@
 
 package de.d3adspace.cardea.task;
 
-import de.d3adspace.cardea.backend.Backend;
 import de.d3adspace.cardea.backend.BackendManager;
 import de.d3adspace.cardea.utils.SocketUtils;
 import org.slf4j.Logger;
@@ -42,15 +41,14 @@ public class BackendRecoverTask implements Runnable {
 
     @Override
     public void run() {
-        for (Backend backend : backendManager.getIdlingBackends()) {
-            if (SocketUtils.isReachable(backend.getHost(), backend.getPort())) {
-                this.backendManager.getIdlingBackends().remove(backend);
-                this.backendManager.addBackend(backend);
-
-                this.logger
-                        .info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
-                                backend.getPort());
-            }
-        }
+        backendManager.getIdlingBackends()
+                .stream()
+                .filter(backend -> SocketUtils.isReachable(backend.getHost(), backend.getPort()))
+                .forEach(backend -> {
+                    backendManager.getIdlingBackends().remove(backend);
+                    backendManager.addBackend(backend);
+                    logger.info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+                                    backend.getPort());
+                });
     }
 }
