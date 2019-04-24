@@ -127,7 +127,7 @@ public class SimpleCardeaServer implements CardeaServer {
             e.printStackTrace();
         }
 
-        this.logger.info("Started reverse proxy on *:", this.config.getServerPort());
+        this.logger.info("Started reverse proxy on *:{}", this.config.getServerPort());
     }
 
     @Override
