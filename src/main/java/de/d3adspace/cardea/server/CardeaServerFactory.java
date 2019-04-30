@@ -19,25 +19,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.server;
 
-import java.util.List;
+import de.d3adspace.cardea.server.config.CardeaConfig;
 
 /**
+ * Factory for all servers.
+ *
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class BackendBalancingFactory {
+public class CardeaServerFactory {
 
-    public static BackendBalancing createBackendBalancing(BackendBalancingType type,
-                                                          List<Backend> backends) {
-        BackendBalancing backendBalancing;
-
-        if (type == BackendBalancingType.RANDOM) {
-            backendBalancing = new BackendBalancingRandom(backends);
-        } else {
-            backendBalancing = new BackendBalancingRoundRobin(backends);
-        }
-
-        return backendBalancing;
+    /**
+     * Create a new server instance.
+     *
+     * @param cardeaConfig The config.
+     * @return The server.
+     */
+    public static CardeaServer createCardeaServer(CardeaConfig cardeaConfig) {
+        return new SimpleCardeaServer(cardeaConfig);
     }
 }

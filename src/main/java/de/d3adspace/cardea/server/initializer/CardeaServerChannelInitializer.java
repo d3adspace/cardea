@@ -19,22 +19,36 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea;
+package de.d3adspace.cardea.server.initializer;
+
+import de.d3adspace.cardea.server.backend.Backend;
+import de.d3adspace.cardea.server.backend.BackendManager;
+import de.d3adspace.cardea.server.codec.CardeaServerFrontEndHandler;
+import de.d3adspace.cardea.server.exception.OutOfBackendsException;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
 
 /**
- * Basic interface for all cardea servers.
- *
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public interface CardeaServer {
+public class CardeaServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    /**
-     * Start the server.
-     */
-    void start();
+    private final BackendManager backendManager;
 
-    /**
-     * Stop the server.
-     */
-    void stop();
+    public CardeaServerChannelInitializer(BackendManager backendManager) {
+        this.backendManager = backendManager;
+    }
+
+    @Override
+    protected void initChannel(SocketChannel socketChannel) throws Exception {
+        Backend backend = backendManager.nextBackend();
+
+        if (backend == null) {
+            throw new OutOfBackendsException();
+        }
+
+        ChannelPipeline pipeline = socketChannel.pipeline();
+        pipeline.addLast(new CardeaServerFrontEndHandler(backend.getHost(), backend.getPort()));
+    }
 }

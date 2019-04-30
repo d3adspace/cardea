@@ -19,9 +19,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.codec;
+package de.d3adspace.cardea.server.codec;
 
-import de.d3adspace.cardea.utils.NettyUtils;
+import de.d3adspace.cardea.server.utils.NettyUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 

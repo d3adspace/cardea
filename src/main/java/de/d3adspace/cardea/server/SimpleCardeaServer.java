@@ -19,16 +19,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea;
+package de.d3adspace.cardea.server;
 
-import de.d3adspace.cardea.backend.BackendBalancing;
-import de.d3adspace.cardea.backend.BackendBalancingFactory;
-import de.d3adspace.cardea.backend.BackendManager;
-import de.d3adspace.cardea.config.CardeaConfig;
-import de.d3adspace.cardea.initializer.CardeaServerChannelInitializer;
-import de.d3adspace.cardea.task.BackendRecoverTask;
-import de.d3adspace.cardea.task.CheckDeadBackendsTask;
-import de.d3adspace.cardea.utils.NettyUtils;
+import de.d3adspace.cardea.server.backend.BackendBalancing;
+import de.d3adspace.cardea.server.backend.BackendBalancingFactory;
+import de.d3adspace.cardea.server.backend.BackendManager;
+import de.d3adspace.cardea.server.config.CardeaConfig;
+import de.d3adspace.cardea.server.initializer.CardeaServerChannelInitializer;
+import de.d3adspace.cardea.server.task.BackendRecoverTask;
+import de.d3adspace.cardea.server.task.CheckDeadBackendsTask;
+import de.d3adspace.cardea.server.utils.NettyUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;

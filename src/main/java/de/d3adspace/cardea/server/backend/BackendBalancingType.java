@@ -19,27 +19,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.utils;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+package de.d3adspace.cardea.server.backend;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class SocketUtils {
+public enum BackendBalancingType {
 
-    public static boolean isReachable(String serverHost, int serverPort) {
-        boolean reached = false;
-
-        try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(serverHost, serverPort), 5000);
-            reached = true;
-        } catch (IOException ignore) {
-            // Lost backend
-        }
-
-        return reached;
-    }
+    ROUND_ROBIN,
+    RANDOM
 }

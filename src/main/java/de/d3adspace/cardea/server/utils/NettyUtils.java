@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.utils;
+package de.d3adspace.cardea.server.utils;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;

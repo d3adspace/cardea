@@ -21,11 +21,11 @@ java -jar cardea-server-1.0-SNAPSHOT.jar -p 8081 -bp ROUND_ROBIN -b host:port,ho
 
 Embedded: 
 ```java
-import de.d3adspace.cardea.CardeaServer;
-import de.d3adspace.cardea.CardeaServerFactory;
-import de.d3adspace.cardea.backend.Backend;
-import de.d3adspace.cardea.backend.BackendBalancingType;
-import de.d3adspace.cardea.config.CardeaConfig;
+import CardeaServer;
+import CardeaServerFactory;
+import Backend;
+import BackendBalancingType;
+import CardeaConfig;
 import java.util.ArrayList;
 import java.util.List;
 

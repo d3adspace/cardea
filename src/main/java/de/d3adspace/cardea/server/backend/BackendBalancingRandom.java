@@ -19,13 +19,29 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.server.backend;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public enum BackendBalancingType {
+public class BackendBalancingRandom extends BackendBalancing {
 
-    ROUND_ROBIN,
-    RANDOM
+    private static final Random RANDOM = new Random();
+
+    BackendBalancingRandom(List<Backend> backends) {
+        super(backends);
+    }
+
+    @Override
+    public Backend getBackend() {
+        if (getBackendCount() == 0) {
+            return null;
+        }
+
+        int random = RANDOM.nextInt(getBackendCount());
+        return getBackends().get(random);
+    }
 }

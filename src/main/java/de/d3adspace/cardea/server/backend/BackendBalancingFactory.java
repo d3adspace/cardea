@@ -19,38 +19,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.config;
-
-import de.d3adspace.cardea.backend.Backend;
-import de.d3adspace.cardea.backend.BackendBalancingType;
+package de.d3adspace.cardea.server.backend;
 
 import java.util.List;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class CardeaConfig {
+public class BackendBalancingFactory {
 
-    private final int serverPort;
-    private final List<Backend> backends;
-    private final BackendBalancingType balancingPolicy;
+    public static BackendBalancing createBackendBalancing(BackendBalancingType type,
+                                                          List<Backend> backends) {
+        BackendBalancing backendBalancing;
 
-    public CardeaConfig(int serverPort, List<Backend> backends,
-                        BackendBalancingType balancingPolicy) {
-        this.serverPort = serverPort;
-        this.backends = backends;
-        this.balancingPolicy = balancingPolicy;
-    }
+        if (type == BackendBalancingType.RANDOM) {
+            backendBalancing = new BackendBalancingRandom(backends);
+        } else {
+            backendBalancing = new BackendBalancingRoundRobin(backends);
+        }
 
-    public List<Backend> getBackends() {
-        return backends;
-    }
-
-    public int getServerPort() {
-        return serverPort;
-    }
-
-    public BackendBalancingType getBalancingPolicy() {
-        return balancingPolicy;
+        return backendBalancing;
     }
 }

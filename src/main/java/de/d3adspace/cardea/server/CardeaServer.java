@@ -19,36 +19,22 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
-
-import java.util.List;
+package de.d3adspace.cardea.server;
 
 /**
+ * Basic interface for all cardea servers.
+ *
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public abstract class BackendBalancing {
+public interface CardeaServer {
 
-    private final List<Backend> backends;
+    /**
+     * Start the server.
+     */
+    void start();
 
-    BackendBalancing(List<Backend> backends) {
-        this.backends = backends;
-    }
-
-    public abstract Backend getBackend();
-
-    void registerBackend(Backend backend) {
-        backends.add(backend);
-    }
-
-    void removeBackend(Backend backend) {
-        backends.remove(backend);
-    }
-
-    public List<Backend> getBackends() {
-        return backends;
-    }
-
-    int getBackendCount() {
-        return backends.size();
-    }
+    /**
+     * Stop the server.
+     */
+    void stop();
 }

@@ -19,14 +19,32 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.exception;
+package de.d3adspace.cardea.server.backend;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class OutOfBackendsException extends Exception {
+public class Backend {
 
-    public OutOfBackendsException() {
-        super("RAN OUT OF BACKENDS!");
+    private final String name;
+    private final String host;
+    private final int port;
+
+    public Backend(String name, String host, int port) {
+        this.name = name;
+        this.host = host;
+        this.port = port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getHost() {
+        return host;
     }
 }

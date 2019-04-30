@@ -19,24 +19,35 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea;
+package de.d3adspace.cardea.server.backend;
 
-import de.d3adspace.cardea.config.CardeaConfig;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Factory for all servers.
- *
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class CardeaServerFactory {
+public class BackendBalancingRoundRobin extends BackendBalancing {
 
-    /**
-     * Create a new server instance.
-     *
-     * @param cardeaConfig The config.
-     * @return The server.
-     */
-    public static CardeaServer createCardeaServer(CardeaConfig cardeaConfig) {
-        return new SimpleCardeaServer(cardeaConfig);
+    private final AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    BackendBalancingRoundRobin(List<Backend> backends) {
+        super(backends);
+    }
+
+    @Override
+    public Backend getBackend() {
+        int currentBackendId = atomicInteger.getAndIncrement();
+
+        if (currentBackendId >= getBackendCount()) {
+            currentBackendId = 0;
+            atomicInteger.set(0);
+        }
+
+        if (getBackendCount() == 0) {
+            return null;
+        }
+
+        return getBackends().get(currentBackendId);
     }
 }

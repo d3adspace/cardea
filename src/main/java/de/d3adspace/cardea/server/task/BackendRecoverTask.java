@@ -19,35 +19,36 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.server.task;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import de.d3adspace.cardea.server.backend.BackendManager;
+import de.d3adspace.cardea.server.utils.SocketUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class BackendBalancingRoundRobin extends BackendBalancing {
+public class BackendRecoverTask implements Runnable {
 
-    private final AtomicInteger atomicInteger = new AtomicInteger(0);
+    private final Logger logger;
+    private final BackendManager backendManager;
 
-    BackendBalancingRoundRobin(List<Backend> backends) {
-        super(backends);
+    public BackendRecoverTask(BackendManager backendManager) {
+        this.logger = LoggerFactory.getLogger(BackendRecoverTask.class);
+        this.backendManager = backendManager;
     }
 
     @Override
-    public Backend getBackend() {
-        int currentBackendId = atomicInteger.getAndIncrement();
-
-        if (currentBackendId >= getBackendCount()) {
-            currentBackendId = 0;
-            atomicInteger.set(0);
-        }
-
-        if (getBackendCount() == 0) {
-            return null;
-        }
-
-        return getBackends().get(currentBackendId);
+    public void run() {
+        backendManager.getIdlingBackends()
+                .stream()
+                .filter(backend -> SocketUtils.isReachable(backend.getHost(), backend.getPort()))
+                .forEach(backend -> {
+                    backendManager.getIdlingBackends().remove(backend);
+                    backendManager.addBackend(backend);
+                    logger.info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
+                                    backend.getPort());
+                });
     }
 }

@@ -83,7 +83,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.d3adspace.cardea.CardeaServerBootstrap</mainClass>
+                            <mainClass>de.d3adspace.cardea.server.CardeaServerBootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

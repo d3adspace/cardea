@@ -19,29 +19,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
-
-import java.util.List;
-import java.util.Random;
+package de.d3adspace.cardea.server.exception;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class BackendBalancingRandom extends BackendBalancing {
+public class OutOfBackendsException extends Exception {
 
-    private static final Random RANDOM = new Random();
-
-    BackendBalancingRandom(List<Backend> backends) {
-        super(backends);
-    }
-
-    @Override
-    public Backend getBackend() {
-        if (getBackendCount() == 0) {
-            return null;
-        }
-
-        int random = RANDOM.nextInt(getBackendCount());
-        return getBackends().get(random);
+    public OutOfBackendsException() {
+        super("RAN OUT OF BACKENDS!");
     }
 }

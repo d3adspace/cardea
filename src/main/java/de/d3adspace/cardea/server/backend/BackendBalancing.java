@@ -19,36 +19,36 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.task;
+package de.d3adspace.cardea.server.backend;
 
-import de.d3adspace.cardea.backend.BackendManager;
-import de.d3adspace.cardea.utils.SocketUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class BackendRecoverTask implements Runnable {
+public abstract class BackendBalancing {
 
-    private final Logger logger;
-    private final BackendManager backendManager;
+    private final List<Backend> backends;
 
-    public BackendRecoverTask(BackendManager backendManager) {
-        this.logger = LoggerFactory.getLogger(BackendRecoverTask.class);
-        this.backendManager = backendManager;
+    BackendBalancing(List<Backend> backends) {
+        this.backends = backends;
     }
 
-    @Override
-    public void run() {
-        backendManager.getIdlingBackends()
-                .stream()
-                .filter(backend -> SocketUtils.isReachable(backend.getHost(), backend.getPort()))
-                .forEach(backend -> {
-                    backendManager.getIdlingBackends().remove(backend);
-                    backendManager.addBackend(backend);
-                    logger.info("Recovered backend: {} [{}:{}]", backend.getName(), backend.getHost(),
-                                    backend.getPort());
-                });
+    public abstract Backend getBackend();
+
+    void registerBackend(Backend backend) {
+        backends.add(backend);
+    }
+
+    void removeBackend(Backend backend) {
+        backends.remove(backend);
+    }
+
+    public List<Backend> getBackends() {
+        return backends;
+    }
+
+    int getBackendCount() {
+        return backends.size();
     }
 }

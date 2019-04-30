@@ -19,10 +19,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.task;
+package de.d3adspace.cardea.server.task;
 
-import de.d3adspace.cardea.backend.BackendManager;
-import de.d3adspace.cardea.utils.SocketUtils;
+import de.d3adspace.cardea.server.backend.BackendManager;
+import de.d3adspace.cardea.server.utils.SocketUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,8 +1,8 @@
-package de.d3adspace.cardea;
+package de.d3adspace.cardea.server;
 
-import de.d3adspace.cardea.backend.Backend;
-import de.d3adspace.cardea.backend.BackendBalancingType;
-import de.d3adspace.cardea.config.CardeaConfig;
+import de.d3adspace.cardea.server.backend.Backend;
+import de.d3adspace.cardea.server.backend.BackendBalancingType;
+import de.d3adspace.cardea.server.config.CardeaConfig;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.server.backend;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

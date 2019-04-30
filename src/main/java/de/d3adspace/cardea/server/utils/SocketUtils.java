@@ -19,36 +19,27 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.initializer;
+package de.d3adspace.cardea.server.utils;
 
-import de.d3adspace.cardea.backend.Backend;
-import de.d3adspace.cardea.backend.BackendManager;
-import de.d3adspace.cardea.codec.CardeaServerFrontEndHandler;
-import de.d3adspace.cardea.exception.OutOfBackendsException;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.socket.SocketChannel;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class CardeaServerChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class SocketUtils {
 
-    private final BackendManager backendManager;
+    public static boolean isReachable(String serverHost, int serverPort) {
+        boolean reached = false;
 
-    public CardeaServerChannelInitializer(BackendManager backendManager) {
-        this.backendManager = backendManager;
-    }
-
-    @Override
-    protected void initChannel(SocketChannel socketChannel) throws Exception {
-        Backend backend = backendManager.nextBackend();
-
-        if (backend == null) {
-            throw new OutOfBackendsException();
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(serverHost, serverPort), 5000);
+            reached = true;
+        } catch (IOException ignore) {
+            // Lost backend
         }
 
-        ChannelPipeline pipeline = socketChannel.pipeline();
-        pipeline.addLast(new CardeaServerFrontEndHandler(backend.getHost(), backend.getPort()));
+        return reached;
     }
 }

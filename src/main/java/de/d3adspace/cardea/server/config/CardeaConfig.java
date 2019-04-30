@@ -19,32 +19,38 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.cardea.backend;
+package de.d3adspace.cardea.server.config;
+
+import de.d3adspace.cardea.server.backend.Backend;
+import de.d3adspace.cardea.server.backend.BackendBalancingType;
+
+import java.util.List;
 
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
-public class Backend {
+public class CardeaConfig {
 
-    private final String name;
-    private final String host;
-    private final int port;
+    private final int serverPort;
+    private final List<Backend> backends;
+    private final BackendBalancingType balancingPolicy;
 
-    public Backend(String name, String host, int port) {
-        this.name = name;
-        this.host = host;
-        this.port = port;
+    public CardeaConfig(int serverPort, List<Backend> backends,
+                        BackendBalancingType balancingPolicy) {
+        this.serverPort = serverPort;
+        this.backends = backends;
+        this.balancingPolicy = balancingPolicy;
     }
 
-    public String getName() {
-        return name;
+    public List<Backend> getBackends() {
+        return backends;
     }
 
-    public int getPort() {
-        return port;
+    public int getServerPort() {
+        return serverPort;
     }
 
-    public String getHost() {
-        return host;
+    public BackendBalancingType getBalancingPolicy() {
+        return balancingPolicy;
     }
 }
